@@ -1,0 +1,47 @@
+api:
+  dashboard: true
+#  insecure: true
+
+entryPoints:
+  http:
+    address: ":80"
+  https:
+    address: ":443"
+    http:
+      tls: {}
+
+certificatesResolvers:
+  http:
+    acme:
+      email: claude.billon@gmail.com
+      storage: acme.json
+      httpChallenge:
+        entryPoint: http
+  letsencrypt:
+    acme:
+      email: claude.billon@gmail.com
+      storage: acme.json
+  #    caserver: "https://acme-staging-v02.api.letsencrypt.org/directory"
+      dnsChallenge:
+        provider: ovh
+
+providers:
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    exposedByDefault: false
+    defaultRule: "Host(`{{ index .Labels \"com.docker.compose.service\"}}.cbillon.ovh`)"
+    network: proxy
+  file:
+    directory: "/configs"
+    watch: true
+
+accessLog:
+  filePath: "/logs/access.log"
+  fields:
+    headers:
+      names:
+        User-Agent: keep
+
+log:
+  filePath: "/logs/traefik.log"
+  level: INFO

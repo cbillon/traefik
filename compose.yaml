@@ -1,0 +1,51 @@
+services:
+  traefik:
+    image: traefik:v3.3
+    container_name: traefik
+    restart: always
+    networks:
+      - proxy
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./data/traefik.yml:/traefik.yml:ro
+      - ./data/configs:/configs:ro
+      - ./data/acme.json:/acme.json:rw
+      - ./data/logs:/logs:rw
+    environment:
+      - TZ=Europe/Paris
+      - OVH_ENDPOINT=${OVH_ENDPOINT}
+      - OVH_APPLICATION_KEY=${OVH_APPLICATION_KEY}
+      - OVH_APPLICATION_SECRET=${OVH_APPLICATION_SECRET}
+      - OVH_CONSUMER_KEY=${OVH_CONSUMER_KEY}
+    read_only: true
+    security_opt:
+      - no-new-privileges=true
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.traefik-https.entrypoints=https
+      - traefik.http.routers.traefik-https.rule=Host(`traefik.cbillon.ovh`)
+      - traefik.http.middlewares.traefik-auth.basicauth.users=${TRAEFIK_ADMIN}
+      - traefik.http.routers.traefik-https.middlewares=traefik-auth
+      - traefik.http.routers.traefik-https.service=api@internal
+      - traefik.http.routers.traefik-https.tls.certresolver=letsencrypt
+      - traefik.http.routers.traefik-https.tls.domains[0].main=cbillon.ovh
+      - traefik.http.routers.traefik-https.tls.domains[0].sans=*.cbillon.ovh
+
+  whoami:
+    image: traefik/whoami
+    container_name: whoami
+    networks:
+      - proxy
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.whoami.rule=Host(`whoami.cbillon.ovh`)
+      - traefik.http.routers.whoami.entrypoints=https
+      - traefik.http.routers.whoami.tls.certresolver=letsencrypt       
+      - traefik.http.routers.whoami.tls.domains[0].main=cbillon.ovh
+      - traefik.http.routers.whoami.tls.domains[0].sans=*.cbillon.ovh
+networks:
+  proxy:
+    external: {}

@@ -1,0 +1,12 @@
+http:
+  routers:
+    nas-https:
+      entryPoints:
+        - "https"
+      rule: Host(`nas.cbillon.ovh`)
+      service: "nas"
+  services:
+    nas:
+      loadBalancer:        
+        servers:
+          - url: "http://192.168.1.34:5000"
