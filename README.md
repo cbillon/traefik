@@ -1,12 +1,12 @@
 ## credits
 [spad](https://www.spad.uk/posts/practical-configuration-of-traefik-as-a-reverse-proxy-for-docker-updated-for-2023/)
 
-## COnfiguration
+## Configuration
 
 - traefik itself
   - compose.yml
   - .env
-  - trefik.yml
+  - traefik.yml
   - configs
     - nas.yml
 
@@ -14,7 +14,7 @@
 
 ## .env
 
-it requires to escape certain charcters such as $
+it requires to escape certain characters such as $
 
 ## create file acme.json
 
