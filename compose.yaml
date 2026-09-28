@@ -9,7 +9,7 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/run/docker.sock:/var/run/docker.sock:rw
       - ./data/traefik.yml:/traefik.yml:ro
       - ./data/configs:/configs:ro
       - ./data/acme.json:/acme.json:rw
