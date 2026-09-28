@@ -36,12 +36,13 @@ providers:
     watch: true
 
 accessLog:
-  filePath: "/logs/access.log"
+  filePath: "/logs/_access.log"
   fields:
     headers:
       names:
         User-Agent: keep
-
+  format: json
 log:
-  filePath: "/logs/traefik.log"
-  level: INFO
+  filePath: /logs/_default.log
+  format: json
+  level: DEBUG
