@@ -8,6 +8,7 @@ services:
     ports:
       - 80:80
       - 443:443
+      - 8080:8080
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:rw
       - ./data/traefik.yml:/traefik.yml:ro
@@ -26,7 +27,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.traefik-https.entrypoints=https
-      - traefik.http.routers.traefik-https.rule=Host(`traefik.cbillon.ovh`)
+      - traefik.http.routers.traefik-https.rule=Host(`traefik.cbillon.ovh`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))
       - traefik.http.middlewares.traefik-auth.basicauth.users=${TRAEFIK_ADMIN}
       - traefik.http.routers.traefik-https.middlewares=traefik-auth
       - traefik.http.routers.traefik-https.service=api@internal

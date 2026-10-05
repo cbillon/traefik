@@ -1,6 +1,23 @@
 ## credits
 [spad](https://www.spad.uk/posts/practical-configuration-of-traefik-as-a-reverse-proxy-for-docker-updated-for-2023/)
 
+## Pre requis
+  
+   - livebox Orange 
+   se connecter 192.168.1.1 admin Se$ame!1
+   dans l'onglet Réseau
+   - DHCP attribuer une adresse fixe  au serveur : 192.168.1.102
+   - donner un nom au serveur : asus
+   - rechercher l'adresse IP de la box , dans le naviguateur whatismyip.com  -> 90.92.38.140
+      cette adresse peut changer !
+   -  un nom de domaine cbillon.ovh  géré par OVH
+   se connecter ovh.com bc1678707-ovh qoznof-xesu6-kutZuc
+
+    - mettre à jour les zones DNS cbillon.ovh et *.cbillon.ovh ave l'adresse de la box : 90.92.38.140  
+
+  si l'adresse IP de la box a changé il faut faire ma lamise jour
+  la prodédure dyndns-OVH le fait automatuqment (non testé)
+
 ## Configuration
 
 - traefik itself
@@ -50,6 +67,12 @@ log
   docker network create proxy
 
 ```
+## pour tester
+lancer traefik docker compose up -d 
+puis dans le naviguateur
+- whoami.cbillon.ovh affiche l'adresse ip du conteneur
+- traefik.cbillon.ovh/dashboard/ (ne pas oublier le /)  authentification cb/sesame
+  la configuration identifiant/mot de passe se trouve dans dans la configuration .env
 
 ## moodle
 
