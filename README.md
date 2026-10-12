@@ -17,7 +17,13 @@
 
   si l'adresse IP de la box a changé il faut faire ma lamise jour
   la prodédure dyndns-OVH le fait automatuqment (non testé)
-
+## tuto 
+### Traefik
+  sur youtube: https://www.youtube.com/watch?v=Ct5EBiSuy5U
+  
+### Traefik Manager
+   sur youtube : https://www.youtube.com/watch?v=0MSV63_d5ok
+   github : https://github.com/chr0nzz/traefik-manager
 ## Configuration
 
 - traefik itself

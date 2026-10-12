@@ -3,9 +3,14 @@ api:
   insecure: true
 
 entryPoints:
-  http:
+  web:
     address: ":80"
-  https:
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https 
+  websecure:
     address: ":443"
     http:
       tls: {}
@@ -16,33 +21,38 @@ certificatesResolvers:
       email: claude.billon@gmail.com
       storage: acme.json
       httpChallenge:
-        entryPoint: http
+        entryPoint: web
   letsencrypt:
     acme:
       email: claude.billon@gmail.com
       storage: acme.json
-  #    caserver: "https://acme-staging-v02.api.letsencrypt.org/directory"
+      caserver: "https://acme-v02.api.letsencrypt.org/directory" # Production
+  #    caserver: "https://acme-staging-v02.api.letsencrypt.org/directory" # test
       dnsChallenge:
         provider: ovh
+        delayBeforeCheck: 10
 
 providers:
   docker:
     endpoint: "unix:///var/run/docker.sock"
     exposedByDefault: false
-    defaultRule: "Host(`{{ index .Labels \"com.docker.compose.service\"}}.cbillon.ovh`)"
+    #defaultRule: "Host(`it-tools.cbillon.ovh`)"
+    #defaultRule: "Host(`{{ .Name }}.{{ index .Labels \"com.docker.compose.service\"}}.cbillon.ovh`)" # .Name or Name
+    #defaultRule: "Host(`{{ index .Labels \"com.docker.compose.service\"}}.cbillon.ovh`)"
+
     network: proxy
   file:
     directory: "/configs"
     watch: true
 
 accessLog:
-  filePath: "/logs/_access.log"
+  filePath: "/logs/access.log"
   fields:
     headers:
       names:
         User-Agent: keep
   format: json
 log:
-  filePath: /logs/_default.log
+  filePath: /logs/default.log
   format: json
   level: DEBUG

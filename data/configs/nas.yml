@@ -2,7 +2,7 @@ http:
   routers:
     nas-https:
       entryPoints:
-        - "https"
+        - "websecure"
       rule: Host(`nas.cbillon.ovh`)
       service: "nas"
   services:
